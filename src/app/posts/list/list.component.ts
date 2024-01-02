@@ -29,6 +29,7 @@ export default class ListComponent {
   start?: number;
   limit?: number;
   loading = true;
+  error?: string;
 
   constructor(private http: HttpClient) {}
 
@@ -37,6 +38,9 @@ export default class ListComponent {
       next: (res) => {
         this.data = res;
         console.log(res.length);
+      },
+      error: () => {
+        this.error = 'cannot load posts!';
       },
     });
   }
