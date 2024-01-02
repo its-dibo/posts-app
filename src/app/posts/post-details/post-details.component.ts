@@ -44,15 +44,19 @@ export default class PostDetailsComponent {
         this.service.getPostDetails(postId).subscribe({
           next: (res) => {
             this.data = res;
-            this.service.getComments(postId).subscribe({
-              next: (comments) => {
-                this.comments = comments;
+            this.service
+              .getComments(postId)
+              .subscribe({
+                next: (comments) => {
+                  this.comments = comments;
+                },
+                error: () => {
+                  this.error = 'loading comments failed!';
+                },
+              })
+              .add(() => {
                 this.loading = false;
-              },
-              error: () => {
-                this.error = 'loading comments failed!';
-              },
-            });
+              });
           },
           error: () => {
             this.error = 'this post is not found!';
