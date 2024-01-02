@@ -1,0 +1,28 @@
+@if(error){
+<div class="alert-error">{{ error }}</div>
+}
+
+<!--  -->
+
+@if(data){
+<article>
+  <h1>{{ data.title }}</h1>
+  <div [innerHTML]="data.body"></div>
+
+  <div class="buttons">
+    <button mat-raised-button><mat-icon>thumb_up</mat-icon> Like</button>
+    <button mat-raised-button><mat-icon>share</mat-icon> share</button>
+  </div>
+</article>
+
+<mat-divider></mat-divider>
+
+<h2>comments</h2>
+@for(comment of comments; track comment.id){
+<p class="comment-name">{{ comment.name }}:</p>
+<p class="comment-email">{{ comment.email }}</p>
+<div [innerHTML]="comment.body"></div>
+<mat-divider></mat-divider>
+} }
+
+<mat-spinner *ngIf="loading" strokeWidth="10" diameter="100"></mat-spinner>
