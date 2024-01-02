@@ -9,6 +9,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { tap } from 'rxjs';
 import { RouterModule } from '@angular/router';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-list',
@@ -19,6 +20,7 @@ import { RouterModule } from '@angular/router';
     MatCardModule,
     MatDividerModule,
     MatButtonModule,
+    MatPaginatorModule,
     RouterModule,
   ],
   templateUrl: './list.component.html',
@@ -26,35 +28,37 @@ import { RouterModule } from '@angular/router';
 })
 export default class ListComponent {
   data?: Post[];
-  start?: number;
-  limit?: number;
   loading = true;
   error?: string;
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.getPosts().subscribe({
-      next: (res) => {
-        this.data = res;
-        console.log(res.length);
-      },
-      error: () => {
-        this.error = 'cannot load posts!';
-      },
-    });
+    this.getPosts();
   }
 
-  getPosts(start = 0, limit = 5) {
+  getPosts(page = 1, limit = 5) {
     this.loading = true;
+    let skip = (page - 1) * limit;
+
     return this.http
       .get<Post[]>(
-        `${environment.apiBaseUrl}/posts?_start=${start}&_limit=${limit}`
+        `${environment.apiBaseUrl}/posts?_start=${skip}&_limit=${limit}`
       )
-      .pipe(
-        tap(() => {
-          this.loading = false;
-        })
-      );
+      .subscribe({
+        next: (res) => {
+          this.data = res;
+        },
+        error: () => {
+          this.error = 'cannot load posts!';
+        },
+      })
+      .add(() => {
+        this.loading = false;
+      });
+  }
+
+  handlePagination(ev: PageEvent) {
+    this.getPosts(ev.pageIndex + 1, ev.pageSize);
   }
 }

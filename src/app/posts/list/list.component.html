@@ -14,4 +14,14 @@
 <mat-divider></mat-divider>
 } @empty{ no data! }
 
+<mat-paginator
+  *ngIf="data"
+  [length]="100"
+  [pageSize]="10"
+  [pageSizeOptions]="[5, 10, 25, 100]"
+  (page)="handlePagination($event)"
+  aria-label="Select page"
+>
+</mat-paginator>
+
 <mat-spinner *ngIf="loading" strokeWidth="10" diameter="100"></mat-spinner>
