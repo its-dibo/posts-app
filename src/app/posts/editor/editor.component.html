@@ -1,4 +1,7 @@
-<h1>Create a new post</h1>
+@if(fields){
+<h1 *ngIf="!id">Create a new post</h1>
+<h1 *ngIf="id">Edit the post details</h1>
+}
 
 <div
   *ngIf="message?.text"
