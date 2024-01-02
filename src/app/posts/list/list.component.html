@@ -1,0 +1,11 @@
+@for(item of data; track item.id){
+<article>
+  <h1>
+    <a routerLink="posts/{{ item.id }}">{{ item.title }}</a>
+  </h1>
+  <div [innerHTML]="item.body"></div>
+</article>
+<mat-divider></mat-divider>
+} @empty{ no data! }
+
+<mat-spinner *ngIf="loading" strokeWidth="10" diameter="100"></mat-spinner>
