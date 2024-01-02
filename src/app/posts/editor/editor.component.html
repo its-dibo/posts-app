@@ -1,0 +1,30 @@
+<h1>Create a new post</h1>
+
+<div
+  *ngIf="message?.text"
+  [ngClass]="'alert-' + message?.status || ''"
+  [innerHTML]="message?.text"
+></div>
+
+<form *ngIf="fields" [formGroup]="formGroup" method="post">
+  <formly-form [form]="formGroup" [fields]="fields" [model]="model">
+  </formly-form>
+
+  <div id="actions">
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="!formGroup.valid || formGroup.pristine"
+      (click)="onSubmit()"
+      type="button"
+    >
+      Submit
+    </button>
+  </div>
+</form>
+
+<mat-spinner
+  *ngIf="loading || !fields"
+  strokeWidth="10"
+  diameter="100"
+></mat-spinner>
